@@ -1,0 +1,60 @@
+{
+  "name": "livemerge-bridge",
+  "version": "0.1.0",
+  "description": "Local daemon that pairs your machine with the LiveMerge web app to receive Ed25519-signed task dispatches and run them via your local Claude Code or Codex CLI.",
+  "keywords": [
+    "livemerge",
+    "claude",
+    "codex",
+    "cli",
+    "daemon",
+    "ai",
+    "agent",
+    "ed25519",
+    "intent-driven"
+  ],
+  "homepage": "https://livemerge.dev",
+  "bugs": {
+    "url": "https://github.com/andy5090/livemerge-bridge/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andy5090/livemerge-bridge.git"
+  },
+  "license": "MIT",
+  "author": "Andineering",
+  "type": "module",
+  "bin": {
+    "livemerge-bridge": "./dist/cli.js"
+  },
+  "main": "./dist/cli.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsx watch src/cli.ts",
+    "test": "vitest run",
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@noble/ed25519": "^2.1.0",
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "cross-spawn": "^7.0.3",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/cross-spawn": "^6.0.6",
+    "@types/node": "^20.14.0",
+    "@types/ws": "^8.5.10",
+    "tsx": "^4.15.0",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
+}

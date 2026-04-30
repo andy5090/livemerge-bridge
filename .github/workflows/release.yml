@@ -1,0 +1,46 @@
+name: Publish to npm on tag
+
+# Triggers when a tag matching `v*` is pushed to the public repo
+# (e.g. `v0.1.1`, `v1.0.0-beta.1`). Builds, tests, then publishes to
+# npm using the NPM_TOKEN secret.
+#
+# First-time setup (one-time, manual):
+#   1. npmjs.com → Account Settings → Access Tokens → Generate
+#      "Automation" token. Copy.
+#   2. gh secret set NPM_TOKEN --repo andy5090/livemerge-bridge
+#      (paste the token when prompted)
+#
+# Cutting a release:
+#   1. Bump the version in package.json (e.g. 0.1.0 → 0.1.1)
+#   2. Commit + push
+#   3. git tag v0.1.1 && git push origin v0.1.1
+#   4. This action publishes to npm
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public --provenance
